@@ -1,4 +1,4 @@
-export function addTask(newTask, nomInput, dateDebutInput, dureeTacheInput ,descriptionInput, submitFormButton, tableElement, taskList) {
+export function addTask(newTask, nomInput, dateDebutInput, dureeTacheInput, descriptionInput, submitFormButton, tableElement, taskList) {
 
     // création des éléments du DOM pour la nouvelle tâche
     let trElement = document.createElement("tr");
@@ -44,7 +44,7 @@ export function addTask(newTask, nomInput, dateDebutInput, dureeTacheInput ,desc
 
         // ajout de la nouvelle tâche dans ma taskList
         taskList.push(newTask);
-        console.log("taskList :",taskList);
+        console.log("taskList :", taskList);
         // mais aussi dans le localStorage
         localStorage.setItem("taskList", JSON.stringify(taskList));
         console.log("localStorage :", localStorage);
@@ -57,35 +57,45 @@ export function addTask(newTask, nomInput, dateDebutInput, dureeTacheInput ,desc
 
     }
 
-    return [editButton, deleteButton, tdElementNom, tdElementDateDebut, tdElementDuree, tdElementDescription];
+    return [editButton, deleteButton, tdElementNom, tdElementDateDebut, tdElementDuree, tdElementDescription, trElement];
 
 }
 
-export function editTask(newTask, nomInput, dateDebutInput, dureeTacheInput, descriptionInput, submitFormButton, tdElementNom, tdElementDateDebut, tdElementDuree, tdElementDescription, taskList) {
+export function editTask(updatingTaskTableElements, updatingTask, nomInput, dateDebutInput, dureeTacheInput, descriptionInput, taskList) {
 
-    // Le bouton de soumission change de texte
-    submitFormButton.textContent = "Enregistrer";
-
-    // Remplissage des champs de formulaire par les valeurs de la tâche à modifier
-    nomInput.value = newTask.nom;
-    dateDebutInput.value = newTask.dateDebut;
-    dureeTacheInput.value = newTask.dureeTache;
-    descriptionInput.value = newTask.description;
-
-    let updatingTaskTableElements = {
-        nom: tdElementNom,
-        dateDebut: tdElementDateDebut,
-        dureeTache: tdElementDuree,
-        description: tdElementDescription
-    }
-
-    let updatingTask = {
+    let updatedTask = {
         nom: nomInput.value,
         dateDebut: dateDebutInput.value,
         dureeTache: dureeTacheInput.value,
         description: descriptionInput.value
+    };
+
+    let localStTaskList = localStorage.getItem("taskList");
+    localStTaskList = localStTaskList.replace(JSON.stringify(updatingTask), JSON.stringify(updatedTask));
+    localStorage.setItem("taskList", localStTaskList);
+    taskList = JSON.parse(localStorage.getItem("taskList"));
+    console.log(localStorage);
+    console.log(taskList);
+
+    updatingTaskTableElements.nom.textContent = nomInput.value;
+    updatingTaskTableElements.dateDebut.textContent = dateDebutInput.value;
+    updatingTaskTableElements.dureeTache.textContent = dureeTacheInput.value;
+    updatingTaskTableElements.description.textContent = descriptionInput.value;
+
+}
+
+export function deleteTask(trElement, taskList, newTask) {
+    trElement.remove();
+
+    let localStTaskList = localStorage.getItem("taskList");
+    if (taskList.length === 1) {
+        localStTaskList = localStTaskList.replace(JSON.stringify(newTask), "");
+    } else {
+        localStTaskList = localStTaskList.replace("," + JSON.stringify(newTask), "");
     }
 
-    return [updatingTaskTableElements,updatingTask];
-
+    localStorage.setItem("taskList", localStTaskList);
+    taskList = JSON.parse(localStorage.getItem("taskList"));
+    console.log(localStorage);
+    console.log(taskList);
 }
