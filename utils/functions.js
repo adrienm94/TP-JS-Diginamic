@@ -57,57 +57,35 @@ export function addTask(newTask, nomInput, dateDebutInput, dureeTacheInput ,desc
 
     }
 
-    // Gestion des événements pour le bouton Modifier
-    editButton.addEventListener("click", (event) => {
-
-        // Le bouton de soumission change de texte
-        submitFormButton.textContent = "Enregistrer";
-
-        // Remplissage des champs de formulaire par les valeurs de la tâche à modifier
-        nomInput.value = newTask.nom;
-        dateDebutInput.value = newTask.dateDebut;
-        dureeTacheInput.value = newTask.dureeTache;
-        descriptionInput.value = newTask.description
-        
-    })
-
-    // Gestion des événements pour le bouton Supprimer
-    deleteButton.addEventListener("click", (event) => {
-        trElement.remove();
-    })
-
+    return [editButton, deleteButton, tdElementNom, tdElementDateDebut, tdElementDuree, tdElementDescription];
 
 }
 
-export function editTask(nomInput, dateDebutInput, dureeTacheInput, descriptionInput, submitFormButton, updatingTaskTableElements, taskList) {
-    if (!(nomInput.value !== "" && dateDebutInput.value !== "" && dureeTacheInput.value !== "" && descriptionInput.value !== "")) {
-        alert("Les champs ne doivent pas être vides !");
-    } else {
+export function editTask(newTask, nomInput, dateDebutInput, dureeTacheInput, descriptionInput, submitFormButton, tdElementNom, tdElementDateDebut, tdElementDuree, tdElementDescription, taskList) {
 
-        let updatedTask = {
-            nom: nomInput.value,
-            dateDebut: dateDebutInput.value,
-            dureeTache: dureeTacheInput.value,
-            description: descriptionInput.value
-        }
+    // Le bouton de soumission change de texte
+    submitFormButton.textContent = "Enregistrer";
 
-        localStorage.getItem("taskList").replace(JSON.stringify(updatingTask), JSON.stringify(updatedTask));
-        taskList = JSON.parse(localStorage.getItem("taskList"));
-        console.log("taskList :",taskList);
-        console.log("localStorage :", localStorage);
+    // Remplissage des champs de formulaire par les valeurs de la tâche à modifier
+    nomInput.value = newTask.nom;
+    dateDebutInput.value = newTask.dateDebut;
+    dureeTacheInput.value = newTask.dureeTache;
+    descriptionInput.value = newTask.description;
 
-        updatingTaskTableElements.nom.textContent = nomInput.value;
-        updatingTaskTableElements.dateDebut.textContent = dateDebutInput.value;
-        updatingTaskTableElements.dureeTache.textContent = dureeTacheInput.value;
-        updatingTaskTableElements.description.textContent = descriptionInput.value;
-
-        // Retour au formulaire d'ajout
-        submitFormButton.textContent = "Ajouter une tâche";
-
-        // Les valeurs des champs sont réinitialisées
-        nomInput.value = "";
-        dateDebutInput.value = "";
-        dureeTacheInput.value = "";
-        descriptionInput.value = "";
+    let updatingTaskTableElements = {
+        nom: tdElementNom,
+        dateDebut: tdElementDateDebut,
+        dureeTache: tdElementDuree,
+        description: tdElementDescription
     }
+
+    let updatingTask = {
+        nom: nomInput.value,
+        dateDebut: dateDebutInput.value,
+        dureeTache: dureeTacheInput.value,
+        description: descriptionInput.value
+    }
+
+    return [updatingTaskTableElements,updatingTask];
+
 }
