@@ -73,9 +73,9 @@ export function editTask(updatingTaskTableElements, updatingTask, nomInput, date
     let localStTaskList = localStorage.getItem("taskList");
     localStTaskList = localStTaskList.replace(JSON.stringify(updatingTask), JSON.stringify(updatedTask));
     localStorage.setItem("taskList", localStTaskList);
-    taskList = JSON.parse(localStorage.getItem("taskList"));
+    //taskList = JSON.parse(localStorage.getItem("taskList"));
     console.log(localStorage);
-    console.log(taskList);
+    console.log(JSON.parse(localStorage.getItem("taskList")));
 
     updatingTaskTableElements.nom.textContent = nomInput.value;
     updatingTaskTableElements.dateDebut.textContent = dateDebutInput.value;
